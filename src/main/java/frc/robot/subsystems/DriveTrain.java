@@ -4,20 +4,34 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-public class ExampleSubsystem extends SubsystemBase {
-  /** Creates a new ExampleSubsystem. */
-  public ExampleSubsystem() {}
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
+public class DriveTrain extends SubsystemBase {
+  WPI_TalonSRX motorL = new WPI_TalonSRX(Constants.leftDriveMotorPort);
+  WPI_TalonSRX motorR = new WPI_TalonSRX(Constants.rightDriveMotorPort);
+
+  DifferentialDrive drive;
+
+  public DriveTrain() {
+    this.motorR.setInverted(true);
+    this.drive = new DifferentialDrive(motorL, motorR);
+  }
+
+  public void drive(double leftSpeed, double rightSpeed) {
+      this.drive.tankDrive(leftSpeed, rightSpeed);
+  }
 
   @Override
   public void periodic() {
-    //test
-    // This method will be called once per scheduler run
+    
   }
 
   @Override
   public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
+    
   }
 }
