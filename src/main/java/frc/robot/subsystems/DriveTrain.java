@@ -40,6 +40,11 @@ public class DriveTrain extends SubsystemBase {
     return Math.max(encoderL.getPosition(), encoderR.getPosition());
   }
 
+  public void resetEncoders() {
+    encoderL.setPosition(0);
+    encoderR.setPosition(0);
+  }
+
   public void drive(double leftSpeed, double rightSpeed) {
       differentialDrive.tankDrive(leftSpeed, rightSpeed);
   }

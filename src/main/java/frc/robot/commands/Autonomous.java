@@ -21,7 +21,9 @@ public class Autonomous extends CommandBase {
   }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+    train.resetEncoders();
+  }
 
   @Override
   public void execute() {
