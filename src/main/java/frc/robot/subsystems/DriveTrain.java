@@ -4,30 +4,38 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
 
+import org.carlmontrobotics.lib199.MotorControllerFactory;
+import org.carlmontrobotics.lib199.MotorErrors.TemperatureLimit;
+
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DriveTrain extends SubsystemBase {
-  WPI_TalonSRX motorL = new WPI_TalonSRX(Constants.leftDriveMotorPort);
-  WPI_TalonSRX motorR = new WPI_TalonSRX(Constants.rightDriveMotorPort);
+  CANSparkMax motorL = MotorControllerFactory.createSparkMax(Constants.leftDriveMotorPort, TemperatureLimit.NEO);
+  CANSparkMax motorR = MotorControllerFactory.createSparkMax(Constants.rightDriveMotorPort, TemperatureLimit.NEO);
 
-  DifferentialDrive drive;
+  DifferentialDrive differentialDrive = new DifferentialDrive(motorL, motorR);
 
-  public DriveTrain() {
+  Joystick leftJoy, rightJoy;
+
+  public DriveTrain(Joystick leftJoy, Joystick rightJoy) {
     this.motorR.setInverted(true);
-    this.drive = new DifferentialDrive(motorL, motorR);
+
+    this.leftJoy = leftJoy;
+    this.rightJoy = rightJoy;
   }
 
   public void drive(double leftSpeed, double rightSpeed) {
-      this.drive.tankDrive(leftSpeed, rightSpeed);
+      differentialDrive.tankDrive(leftSpeed, rightSpeed);
   }
 
   @Override
   public void periodic() {
-    
+    drive(leftJoy.getY() * -1, rightJoy.getY() * -1);
   }
 
   @Override

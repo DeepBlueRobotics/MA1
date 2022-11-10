@@ -18,18 +18,15 @@ import frc.robot.subsystems.DriveTrain;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final DriveTrain m_driveTrain = new DriveTrain();
+  private final Joystick leftJoy = new Joystick(Constants.leftJoystickPort);
+  private final Joystick rightJoy = new Joystick(Constants.rightJoystickPort);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  private final DriveTrain m_driveTrain = new DriveTrain(leftJoy, rightJoy);
+
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
 
-    Joystick leftJoy = new Joystick(Constants.leftJoystickPort);
-    Joystick rightJoy = new Joystick(Constants.rightJoystickPort);
-
-    m_driveTrain.setDefaultCommand(new Drive(m_driveTrain, leftJoy.getY(), rightJoy.getY()));
   }
 
   /**
@@ -41,7 +38,7 @@ public class RobotContainer {
   private void configureButtonBindings() {}
 
   /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
+   * Use this to pass the autonomous command to dsrthe main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
