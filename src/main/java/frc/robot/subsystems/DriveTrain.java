@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 
 import org.carlmontrobotics.lib199.MotorControllerFactory;
 import org.carlmontrobotics.lib199.MotorErrors.TemperatureLimit;
@@ -15,25 +16,40 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DriveTrain extends SubsystemBase {
-  CANSparkMax motorL = MotorControllerFactory.createSparkMax(Constants.leftDriveMotorPort, TemperatureLimit.NEO);
-  CANSparkMax motorR = MotorControllerFactory.createSparkMax(Constants.rightDriveMotorPort, TemperatureLimit.NEO);
+  private final CANSparkMax motorL = MotorControllerFactory.createSparkMax(Constants.leftDriveMotorPort, TemperatureLimit.NEO);
+  private final CANSparkMax motorR = MotorControllerFactory.createSparkMax(Constants.rightDriveMotorPort, TemperatureLimit.NEO);
 
-  DifferentialDrive differentialDrive = new DifferentialDrive(motorL, motorR);
+  private final DifferentialDrive differentialDrive = new DifferentialDrive(motorL, motorR);
  
-  RelativeEncoder encoder= motorL.getEncoder();
+  private final RelativeEncoder encoderL = motorL.getEncoder();
+  private final RelativeEncoder encoderR = motorR.getEncoder();
   
-  Joystick leftJoy, rightJoy;
+  private final Joystick leftJoy, rightJoy;
 
   public DriveTrain(Joystick leftJoy, Joystick rightJoy) {
-    this.motorR.setInverted(true);
+    motorR.setInverted(true);
+
+    encoderL.setPositionConversionFactor(Constants.wheelCircumference);
+    encoderR.setPositionConversionFactor(Constants.wheelCircumference);
 
     this.leftJoy = leftJoy;
     this.rightJoy = rightJoy;
-    
+  }
+
+  public double getDistance() {
+    return Math.max(encoderL.getPosition(), encoderR.getPosition());
   }
 
   public void drive(double leftSpeed, double rightSpeed) {
       differentialDrive.tankDrive(leftSpeed, rightSpeed);
+  }
+
+  public void forward(double speed) {
+    differentialDrive.tankDrive(speed, speed);
+  }
+
+  public void stop() {
+    differentialDrive.tankDrive(0, 0);
   }
 
   @Override
@@ -44,6 +60,5 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void simulationPeriodic() {
 
-    }
   }
-
+}

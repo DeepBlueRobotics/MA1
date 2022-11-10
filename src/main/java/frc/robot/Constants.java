@@ -18,4 +18,6 @@ public final class Constants {
 
     public static final int leftJoystickPort = 0;
     public static final int rightJoystickPort = 1;
+
+    public static double wheelCircumference = 0.1; // meters
 }

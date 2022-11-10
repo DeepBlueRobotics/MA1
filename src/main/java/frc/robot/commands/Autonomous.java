@@ -4,25 +4,40 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.DriveTrain;
 
-public class Autonomous extends SubsystemBase {
-  /** Creates a new Autonomous. */
-  public Autonomous() {}
+public class Autonomous extends CommandBase {
+  public static final double autoDistance = 0.6096; // 2 ft in meters
+  public static final double autoSpeed = 1;
+
+  private boolean isFinished = false;
+  private DriveTrain train;
+
+  public Autonomous(DriveTrain train) {
+    addRequirements(train);
+
+    this.train = train;
+  }
 
   @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
-  
-  public void motorSpeed()
-{
-motorL.set(0.9);
-motorR.set(0.9);
-}
-  if(getposition()>= 2)
-{
-  motorL.set(0);
-  motorR.set(0);
-}
+  public void initialize() {}
 
+  @Override
+  public void execute() {
+    if (train.getDistance() < autoDistance) {
+      train.forward(autoSpeed);
+    } else {
+      train.stop();
+      isFinished = true;
+    }
+  }
+
+  @Override
+  public void end(boolean interrupted) {}
+
+  @Override
+  public boolean isFinished() {
+    return isFinished;
+  }
+}
