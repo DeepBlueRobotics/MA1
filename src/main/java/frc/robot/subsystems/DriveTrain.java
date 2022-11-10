@@ -19,7 +19,9 @@ public class DriveTrain extends SubsystemBase {
   CANSparkMax motorR = MotorControllerFactory.createSparkMax(Constants.rightDriveMotorPort, TemperatureLimit.NEO);
 
   DifferentialDrive differentialDrive = new DifferentialDrive(motorL, motorR);
-
+ 
+  RelativeEncoder encoder= motorL.getEncoder();
+  
   Joystick leftJoy, rightJoy;
 
   public DriveTrain(Joystick leftJoy, Joystick rightJoy) {
@@ -27,6 +29,7 @@ public class DriveTrain extends SubsystemBase {
 
     this.leftJoy = leftJoy;
     this.rightJoy = rightJoy;
+    
   }
 
   public void drive(double leftSpeed, double rightSpeed) {
@@ -40,6 +43,7 @@ public class DriveTrain extends SubsystemBase {
 
   @Override
   public void simulationPeriodic() {
-    
+
+    }
   }
-}
+
