@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
 public class Autonomous extends CommandBase {
-  public static final double autoDistance = 0.6096; // 2 ft in meters
+  public static final double autoDistance = 0.3048*10; // 10 feet -> meters
   public static final double autoSpeed = 1;
 
   private boolean isFinished = false;

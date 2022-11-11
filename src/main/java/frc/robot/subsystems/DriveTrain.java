@@ -20,10 +20,10 @@ public class DriveTrain extends SubsystemBase {
   private final CANSparkMax motorR = MotorControllerFactory.createSparkMax(Constants.rightDriveMotorPort, TemperatureLimit.NEO);
 
   private final DifferentialDrive differentialDrive = new DifferentialDrive(motorL, motorR);
- 
+
   private final RelativeEncoder encoderL = motorL.getEncoder();
   private final RelativeEncoder encoderR = motorR.getEncoder();
-  
+
   private final Joystick leftJoy, rightJoy;
 
   public DriveTrain(Joystick leftJoy, Joystick rightJoy) {
@@ -37,7 +37,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public double getDistance() {
-    return Math.max(encoderL.getPosition(), encoderR.getPosition());
+    return (encoderL.getPosition() + encoderR.getPosition())/2.0;
   }
 
   public void resetEncoders() {
