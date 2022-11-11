@@ -5,8 +5,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.RelativeEncoder;
+
 
 public class Autonomous extends SubsystemBase {
+  RelativeEncoder encoderD = new RelativeEncoder();
   /** Creates a new Autonomous. */
   public Autonomous() {}
 
@@ -16,13 +19,14 @@ public class Autonomous extends SubsystemBase {
   }
   
   public void motorSpeed()
-{
-motorL.set(0.9);
-motorR.set(0.9);
-}
-  if(getposition()>= 2)
-{
-  motorL.set(0);
-  motorR.set(0);
-}
+  {
+  motorL.set(0.9);
+  motorR.set(0.9);
+  motorL.getEncoder();
+  int mortorLD = motorL.getPosition();
+  int motorRD = motorR.getPosition();
+  }
+  if(motorLD,motorRD>=2)
 
+  
+}
