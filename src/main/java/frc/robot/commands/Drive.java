@@ -4,38 +4,39 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
-public class Autonomous extends CommandBase {
-  public static final double autoDistance = 0.3048*5.5; // 10 feet -> meters
-  public static final double autoSpeed = 1;
-
+public class Drive extends CommandBase {
   private DriveTrain train;
+  private Joystick leftJoy, rightJoy;
 
-  public Autonomous(DriveTrain train) {
+  public Drive(DriveTrain train, Joystick leftJoy, Joystick rightJoy) {
     addRequirements(train);
 
     this.train = train;
+    this.leftJoy = leftJoy;
+    this.rightJoy = rightJoy;
   }
 
   @Override
-  public void initialize() {
-    train.resetEncoders();
-  }
+  public void initialize() {}
 
   @Override
   public void execute() {
-    train.tankDrive(autoSpeed, autoSpeed);
+    if (train.mode == DriveTrain.DriveMode.TANK) {
+      train.tankDrive(-leftJoy.getY(), -rightJoy.getY());
+    } else {
+      train.arcadeDrive(-leftJoy.getY(), rightJoy.getX());
+    }
   }
 
   @Override
-  public void end(boolean interrupted) {
-    train.tankDrive(0, 0);
-  }
+  public void end(boolean interrupted) {}
 
   @Override
   public boolean isFinished() {
-    return train.getDistance() >= autoDistance;
+    return true;
   }
 }

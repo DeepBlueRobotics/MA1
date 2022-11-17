@@ -8,8 +8,12 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Autonomous;
+import frc.robot.commands.Drive;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.DriveTrain.DriveMode;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -21,12 +25,13 @@ public class RobotContainer {
   private final Joystick leftJoy = new Joystick(Constants.leftJoystickPort);
   private final Joystick rightJoy = new Joystick(Constants.rightJoystickPort);
 
-  private final DriveTrain m_driveTrain = new DriveTrain(leftJoy, rightJoy);
+  private final DriveTrain driveTrain = new DriveTrain();
+  private final Intake intake = new Intake();
 
   public RobotContainer() {
-    // Configure the button bindings
     configureButtonBindings();
-
+    
+    driveTrain.setDefaultCommand(new Drive(driveTrain, leftJoy, rightJoy));
   }
 
   /**
@@ -35,7 +40,41 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    // normal intaking
+    new JoystickButton(leftJoy, 4).whenPressed(() -> {
+      intake.setIntakeMotors(Intake.NORMAL_INTAKE_SPEED);
+      intake.setRollerMotor(Intake.NORMAL_ROLLER_SPEED);
+    });
+    // slow intaking
+    new JoystickButton(leftJoy, 5).whenPressed(() -> {
+      intake.setIntakeMotors(Intake.SLOW_INTAKE_SPEED);
+      intake.setRollerMotor(0);
+    });
+    // outtaking
+    new JoystickButton(leftJoy, 6).whenPressed(() -> {
+      intake.setIntakeMotors(-Intake.NORMAL_INTAKE_SPEED);
+      intake.setRollerMotor(-Intake.NORMAL_ROLLER_SPEED);
+    });
+    // slow outtaking
+    new JoystickButton(leftJoy, 7).whenPressed(() -> {
+      intake.setIntakeMotors(-Intake.SLOW_INTAKE_SPEED);
+      intake.setRollerMotor(0);
+    });
+    // stop
+    new JoystickButton(leftJoy, 8).whenPressed(() -> {
+      intake.setIntakeMotors(0);
+      intake.setRollerMotor(0);
+    });
+    // switch drive modes
+    new JoystickButton(rightJoy, 6).whenPressed(() -> {
+      if (driveTrain.mode == DriveMode.TANK) {
+        driveTrain.mode = DriveMode.ARCADE;
+      } else {
+        driveTrain.mode = DriveMode.TANK;
+      }
+    });
+  }
 
   /**
    * Use this to pass the autonomous command to dsrthe main {@link Robot} class.
@@ -43,6 +82,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new Autonomous(m_driveTrain);
+    return new Autonomous(driveTrain);
   }
 }

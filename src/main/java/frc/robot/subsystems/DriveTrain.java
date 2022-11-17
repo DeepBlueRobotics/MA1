@@ -10,7 +10,6 @@ import com.revrobotics.RelativeEncoder;
 import org.carlmontrobotics.lib199.MotorControllerFactory;
 import org.carlmontrobotics.lib199.MotorErrors.TemperatureLimit;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -24,20 +23,18 @@ public class DriveTrain extends SubsystemBase {
   private final RelativeEncoder encoderL = motorL.getEncoder();
   private final RelativeEncoder encoderR = motorR.getEncoder();
 
-  private final Joystick leftJoy, rightJoy;
+  public enum DriveMode {TANK, ARCADE}
+  public DriveMode mode = DriveMode.TANK;
 
-  public DriveTrain(Joystick leftJoy, Joystick rightJoy) {
+  public DriveTrain() {
     motorR.setInverted(true);
 
     encoderL.setPositionConversionFactor(Constants.wheelCircumference);
     encoderR.setPositionConversionFactor(Constants.wheelCircumference);
-
-    this.leftJoy = leftJoy;
-    this.rightJoy = rightJoy;
   }
 
   public double getDistance() {
-    return (encoderL.getPosition() + encoderR.getPosition())/2.0;
+    return (encoderL.getPosition() + encoderR.getPosition()) / 2.0;
   }
 
   public void resetEncoders() {
@@ -45,25 +42,33 @@ public class DriveTrain extends SubsystemBase {
     encoderR.setPosition(0);
   }
 
-  public void drive(double leftSpeed, double rightSpeed) {
-      differentialDrive.tankDrive(leftSpeed, rightSpeed);
+  public void tankDrive(double leftSpeed, double rightSpeed) {
+    differentialDrive.tankDrive(leftSpeed, rightSpeed);
   }
 
-  public void forward(double speed) {
-    differentialDrive.tankDrive(speed, speed);
-  }
-
-  public void stop() {
-    differentialDrive.tankDrive(0, 0);
+  public void arcadeDrive(double speed, double rotation) {
+    differentialDrive.arcadeDrive(speed, rotation);
   }
 
   @Override
   public void periodic() {
-    drive(leftJoy.getY() * -1, rightJoy.getY() * -1);
+    
   }
 
   @Override
-  public void simulationPeriodic() {
-
-  }
+  public void simulationPeriodic() { }
 }
+
+
+/*
+
+You could also implement arcade drive mode. coding is very similar to tank mode. Also prepare smartdashboard values 
+for testing purposes (such as motor speed and other values that u think are necessary)
+
+Also ur forward and stop methods in the drivetrain subsystem technically don't work since your periodic method 
+will make the drivetrain drive at the speed of your joysticks right after it tells it to stop or go forward. 
+(That is the con of putting stuff in periodic, you can create a command and set it as a default command, which i 
+think was wut i told u to do originally but i told u u could just put it in periodic which is my bad) Personally I 
+think those methods are unnecessary in the first place and you don't really need them. If you wanna make the robot 
+stop just make joysticks stay still, no need for it to be mapped to a button or anything like that.
+*/
