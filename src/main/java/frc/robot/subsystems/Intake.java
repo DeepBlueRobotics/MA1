@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 
 import org.carlmontrobotics.lib199.MotorControllerFactory;
 import org.carlmontrobotics.lib199.MotorErrors.TemperatureLimit;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -36,7 +37,14 @@ public class Intake extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+    SmartDashboard.putNumber("Normal Intake", Intakespeed.normalIn.value);
+    SmartDashboard.putNumber("Slow Intake", Intakespeed.SlowIn.value);
+    SmartDashboard.putNumber("Roller In", Intakespeed.rollerIn.value);
+    SmartDashboard.putNumber("Roller Out", Intakespeed.rollerIn.value);
+    SmartDashboard.putNumber("Normal Outake", Intakespeed.normalOut.value);
+    SmartDashboard.putNumber("Slow Outake", Intakespeed.slowOut.value);
+  }
 
   public static enum IntakeSpeed{
       normalIn(.8*Constants.greenWheelCircumference),
@@ -46,6 +54,8 @@ public class Intake extends SubsystemBase {
       rollerIn(.6*Constants.greenWheelCircumference),
       rollerOut(0.0375*Constants.greenWheelCircumference),
       stop(0.0);
+
+      
 
       public final double value;
 
