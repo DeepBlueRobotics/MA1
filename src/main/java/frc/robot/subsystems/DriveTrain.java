@@ -29,8 +29,8 @@ public class DriveTrain extends SubsystemBase {
   public DriveTrain() {
     motorR.setInverted(true);
 
-    encoderL.setPositionConversionFactor(Constants.wheelCircumference);
-    encoderR.setPositionConversionFactor(Constants.wheelCircumference);
+    encoderL.setPositionConversionFactor(Constants.greenWheelCircumference);
+    encoderR.setPositionConversionFactor(Constants.greenWheelCircumference);
   }
 
   public double getDistance() {
@@ -52,7 +52,7 @@ public class DriveTrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    
+
   }
 
   @Override
@@ -62,13 +62,13 @@ public class DriveTrain extends SubsystemBase {
 
 /*
 
-You could also implement arcade drive mode. coding is very similar to tank mode. Also prepare smartdashboard values 
+You could also implement arcade drive mode. coding is very similar to tank mode. Also prepare smartdashboard values
 for testing purposes (such as motor speed and other values that u think are necessary)
 
-Also ur forward and stop methods in the drivetrain subsystem technically don't work since your periodic method 
-will make the drivetrain drive at the speed of your joysticks right after it tells it to stop or go forward. 
-(That is the con of putting stuff in periodic, you can create a command and set it as a default command, which i 
-think was wut i told u to do originally but i told u u could just put it in periodic which is my bad) Personally I 
-think those methods are unnecessary in the first place and you don't really need them. If you wanna make the robot 
+Also ur forward and stop methods in the drivetrain subsystem technically don't work since your periodic method
+will make the drivetrain drive at the speed of your joysticks right after it tells it to stop or go forward.
+(That is the con of putting stuff in periodic, you can create a command and set it as a default command, which i
+think was wut i told u to do originally but i told u u could just put it in periodic which is my bad) Personally I
+think those methods are unnecessary in the first place and you don't really need them. If you wanna make the robot
 stop just make joysticks stay still, no need for it to be mapped to a button or anything like that.
 */
