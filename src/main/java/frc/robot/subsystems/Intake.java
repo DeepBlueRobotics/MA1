@@ -13,9 +13,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-  public static final double NORMAL_INTAKE_SPEED = 0.8;
-  public static final double SLOW_INTAKE_SPEED = 0.05;
-  public static final double NORMAL_ROLLER_SPEED = 0.6;
+  // public static final double NORMAL_INTAKE_SPEED = 0.8;
+  // public static final double SLOW_INTAKE_SPEED = 0.05;
+  // public static final double NORMAL_ROLLER_SPEED = 0.6;
+  // moved to enum IntakeSpeed
 
   private final CANSparkMax motorL = MotorControllerFactory.createSparkMax(Constants.leftIntakeMotorPort, TemperatureLimit.NEO);
   private final CANSparkMax motorR = MotorControllerFactory.createSparkMax(Constants.rightIntakeMotorPort, TemperatureLimit.NEO);
@@ -25,17 +26,31 @@ public class Intake extends SubsystemBase {
     motorR.setInverted(true);
   }
 
-  public void setIntakeMotors(double speed) {
-    motorL.set(speed);
-    motorR.set(speed);
+  public void setIntakeMotors(IntakeSpeed speed) {
+    motorL.set(speed.value);
+    motorR.set(speed.value);
   }
 
-  public void setRollerMotor(double speed) {
-    roller.set(speed);
+  public void setRollerMotor(IntakeSpeed speed) {
+    roller.set(speed.value);
   }
 
   @Override
-  public void periodic() {
-    
-  }
+  public void periodic() {}
+
+  public static enum IntakeSpeed{
+      normalIn(.8*Constants.greenWheelCircumference),
+      slowIn(.05*Constants.greenWheelCircumference),
+      normalOut(-.8*Constants.greenWheelCircumference),
+      slowOut(-.05*Constants.greenWheelCircumference),//for stacking/placing blocks
+      rollerIn(.6*Constants.greenWheelCircumference),
+      rollerOut(0.0375*Constants.greenWheelCircumference),
+      stop(0.0);
+
+      public final double value;
+
+      private IntakeSpeed(double value) {
+          this.value = value;
+      }
+    };
 }

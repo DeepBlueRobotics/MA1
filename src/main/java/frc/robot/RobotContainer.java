@@ -30,7 +30,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     configureButtonBindings();
-    
+
     driveTrain.setDefaultCommand(new Drive(driveTrain, leftJoy, rightJoy));
   }
 
@@ -43,28 +43,28 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // normal intaking
     new JoystickButton(leftJoy, 4).whenPressed(() -> {
-      intake.setIntakeMotors(Intake.NORMAL_INTAKE_SPEED);
-      intake.setRollerMotor(Intake.NORMAL_ROLLER_SPEED);
+      intake.setIntakeMotors(Intake.IntakeSpeed.normalIn);
+      intake.setRollerMotor(Intake.IntakeSpeed.rollerIn);
     });
     // slow intaking
     new JoystickButton(leftJoy, 5).whenPressed(() -> {
-      intake.setIntakeMotors(Intake.SLOW_INTAKE_SPEED);
-      intake.setRollerMotor(0);
+      intake.setIntakeMotors(Intake.IntakeSpeed.slowIn);
+      intake.setRollerMotor(Intake.IntakeSpeed.rollerIn);
     });
     // outtaking
     new JoystickButton(leftJoy, 6).whenPressed(() -> {
-      intake.setIntakeMotors(-Intake.NORMAL_INTAKE_SPEED);
-      intake.setRollerMotor(-Intake.NORMAL_ROLLER_SPEED);
+      intake.setIntakeMotors(Intake.IntakeSpeed.normalOut);
+      intake.setRollerMotor(Intake.IntakeSpeed.rollerOut);
     });
-    // slow outtaking
+    // slow outtaking / stacking
     new JoystickButton(leftJoy, 7).whenPressed(() -> {
-      intake.setIntakeMotors(-Intake.SLOW_INTAKE_SPEED);
-      intake.setRollerMotor(0);
+      intake.setIntakeMotors(Intake.IntakeSpeed.slowIn);
+      intake.setRollerMotor(Intake.IntakeSpeed.rollerOut);
     });
     // stop
     new JoystickButton(leftJoy, 8).whenPressed(() -> {
-      intake.setIntakeMotors(0);
-      intake.setRollerMotor(0);
+      intake.setIntakeMotors(Intake.IntakeSpeed.stop);
+      intake.setRollerMotor(Intake.IntakeSpeed.stop);
     });
     // switch drive modes
     new JoystickButton(rightJoy, 6).whenPressed(() -> {
