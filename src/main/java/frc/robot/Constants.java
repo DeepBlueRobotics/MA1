@@ -18,6 +18,7 @@ public final class Constants {
     public static final int leftIntakeMotorPort = 3;
     public static final int rightIntakeMotorPort = 4;
     public static final int intakeRollerMotorPort = 5;
+    public static final int rampMotorPort = 6;
 
     public static final int leftJoystickPort = 0;
     public static final int rightJoystickPort = 1;

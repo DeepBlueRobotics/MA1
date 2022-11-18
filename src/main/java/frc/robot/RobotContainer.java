@@ -41,6 +41,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    //TODO: find button for Ramp up/down
+    //
+    //
+    //
     // normal intaking
     new JoystickButton(leftJoy, 4).whenPressed(() -> {
       intake.setIntakeMotors(Intake.IntakeSpeed.normalIn);
