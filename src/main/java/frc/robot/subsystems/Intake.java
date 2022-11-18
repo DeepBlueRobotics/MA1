@@ -23,6 +23,7 @@ public class Intake extends SubsystemBase {
   public static double normalOutMotor = -.8*Constants.greenWheelCircumference;
   public static double rollerIntake = .6*Constants.greenWheelCircumference;
   public static double rollerOutake = 0.0375*Constants.greenWheelCircumference;
+  public static double slowOutSpeed = -.05*Constants.greenWheelCircumference;
 
 
   private final CANSparkMax motorL = MotorControllerFactory.createSparkMax(Constants.leftIntakeMotorPort, TemperatureLimit.NEO);
@@ -50,12 +51,12 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    IntakeSpeed.normalIn.value = SmartDashboard.getNumber("Normal Intake",.8*Constants.greenWheelCircumference);
-    IntakeSpeed.slowIn.value = SmartDashboard.getNumber("Slow Intake",.05*Constants.greenWheelCircumference);
-    IntakeSpeed.rollerIn.value = SmartDashboard.getNumber("Roller In",.6*Constants.greenWheelCircumference);
-    IntakeSpeed.rollerOut.value = SmartDashboard.getNumber("Roller Out",0.0375*Constants.greenWheelCircumference);
-    IntakeSpeed.slowOut.value = SmartDashboard.getNumber("Slow Outake",-.05*Constants.greenWheelCircumference);
-    IntakeSpeed.normalOut.value = SmartDashboard.getNumber("Normal Outake",-.8*Constants.greenWheelCircumference);
+    double normalInMotorSpeed = SmartDashboard.getNumber("Normal Intake",.8*Constants.greenWheelCircumference);
+    double slowInMotorSpeed = SmartDashboard.getNumber("Slow Intake",.05*Constants.greenWheelCircumference);
+    double rollerIntake = SmartDashboard.getNumber("Roller In",.6*Constants.greenWheelCircumference);
+    double rollerOutake = SmartDashboard.getNumber("Roller Out",0.0375*Constants.greenWheelCircumference);
+    double slowOutSpeed = SmartDashboard.getNumber("Slow Outake",-.05*Constants.greenWheelCircumference);
+    double normalOutMotorSpeed = SmartDashboard.getNumber("Normal Outake",-.8*Constants.greenWheelCircumference);
   }
 
   public static enum IntakeSpeed{
