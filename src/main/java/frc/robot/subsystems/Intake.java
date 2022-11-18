@@ -38,12 +38,12 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Normal Intake", Intakespeed.normalIn.value);
-    SmartDashboard.putNumber("Slow Intake", Intakespeed.SlowIn.value);
-    SmartDashboard.putNumber("Roller In", Intakespeed.rollerIn.value);
-    SmartDashboard.putNumber("Roller Out", Intakespeed.rollerIn.value);
-    SmartDashboard.putNumber("Normal Outake", Intakespeed.normalOut.value);
-    SmartDashboard.putNumber("Slow Outake", Intakespeed.slowOut.value);
+    SmartDashboard.putNumber("Normal Intake", IntakeSpeed.normalIn.value);
+    SmartDashboard.putNumber("Slow Intake", IntakeSpeed.slowIn.value);
+    SmartDashboard.putNumber("Roller In", IntakeSpeed.rollerIn.value);
+    SmartDashboard.putNumber("Roller Out", IntakeSpeed.rollerIn.value);
+    SmartDashboard.putNumber("Normal Outake", IntakeSpeed.normalOut.value);
+    SmartDashboard.putNumber("Slow Outake", IntakeSpeed.slowOut.value);
   }
 
   public static enum IntakeSpeed{
@@ -55,7 +55,7 @@ public class Intake extends SubsystemBase {
       rollerOut(0.0375*Constants.greenWheelCircumference),
       stop(0.0);
 
-      
+
 
       public final double value;
 
