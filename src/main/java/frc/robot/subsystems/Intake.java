@@ -18,6 +18,12 @@ public class Intake extends SubsystemBase {
   // public static final double SLOW_INTAKE_SPEED = 0.05;
   // public static final double NORMAL_ROLLER_SPEED = 0.6;
   // moved to enum IntakeSpeed
+  public static double slowInMotorSpeed = -.05*Constants.greenWheelCircumference;
+  public static double normalInMotorSpeed = .8*Constants.greenWheelCircumference;
+  public static double normalOutMotor = -.8*Constants.greenWheelCircumference;
+  public static double rollerIntake = .6*Constants.greenWheelCircumference;
+  public static double rollerOutake = 0.0375*Constants.greenWheelCircumference;
+
 
   private final CANSparkMax motorL = MotorControllerFactory.createSparkMax(Constants.leftIntakeMotorPort, TemperatureLimit.NEO);
   private final CANSparkMax motorR = MotorControllerFactory.createSparkMax(Constants.rightIntakeMotorPort, TemperatureLimit.NEO);
@@ -25,6 +31,12 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
     motorR.setInverted(true);
+    SmartDashboard.putNumber("Normal Intake", IntakeSpeed.normalIn.value);
+    SmartDashboard.putNumber("Slow Intake", IntakeSpeed.slowIn.value);
+    SmartDashboard.putNumber("Roller In", IntakeSpeed.rollerIn.value);
+    SmartDashboard.putNumber("Roller Out", IntakeSpeed.rollerOut.value);
+    SmartDashboard.putNumber("Normal Outake", IntakeSpeed.normalOut.value);
+    SmartDashboard.putNumber("Slow Outake", IntakeSpeed.slowOut.value);
   }
 
   public void setIntakeMotors(IntakeSpeed speed) {
@@ -38,12 +50,12 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Normal Intake", Intakespeed.normalIn.value);
-    SmartDashboard.putNumber("Slow Intake", Intakespeed.SlowIn.value);
-    SmartDashboard.putNumber("Roller In", Intakespeed.rollerIn.value);
-    SmartDashboard.putNumber("Roller Out", Intakespeed.rollerIn.value);
-    SmartDashboard.putNumber("Normal Outake", Intakespeed.normalOut.value);
-    SmartDashboard.putNumber("Slow Outake", Intakespeed.slowOut.value);
+    IntakeSpeed.normalIn.value = SmartDashboard.getNumber("Normal Intake",.8*Constants.greenWheelCircumference);
+    IntakeSpeed.slowIn.value = SmartDashboard.getNumber("Slow Intake",.05*Constants.greenWheelCircumference);
+    IntakeSpeed.rollerIn.value = SmartDashboard.getNumber("Roller In",.6*Constants.greenWheelCircumference);
+    IntakeSpeed.rollerOut.value = SmartDashboard.getNumber("Roller Out",0.0375*Constants.greenWheelCircumference);
+    IntakeSpeed.slowOut.value = SmartDashboard.getNumber("Slow Outake",-.05*Constants.greenWheelCircumference);
+    IntakeSpeed.normalOut.value = SmartDashboard.getNumber("Normal Outake",-.8*Constants.greenWheelCircumference);
   }
 
   public static enum IntakeSpeed{
