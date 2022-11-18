@@ -29,8 +29,8 @@ public class DriveTrain extends SubsystemBase {
   public DriveTrain() {
     motorR.setInverted(true);
 
-    encoderL.setPositionConversionFactor(Constants.greenWheelCircumference);
-    encoderR.setPositionConversionFactor(Constants.greenWheelCircumference);
+    encoderL.setPositionConversionFactor(Constants.driveWheelCircumference);
+    encoderR.setPositionConversionFactor(Constants.driveWheelCircumference);
   }
 
   public double getDistance() {
