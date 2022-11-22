@@ -7,13 +7,13 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.DriveTrain.DriveMode;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -47,35 +47,30 @@ public class RobotContainer {
     //
     // normal intaking
     new JoystickButton(leftJoy, 4).whenPressed(() -> {
-      intake.setIntakeMotors(Intake.IntakeSpeed.normalIn);
-      intake.setRollerMotor(Intake.IntakeSpeed.rollerIn);
+      intake.setIntakeMotors(SmartDashboard.getNumber("Normal Intake", 0));
     });
     // slow intaking
     new JoystickButton(leftJoy, 5).whenPressed(() -> {
-      intake.setIntakeMotors(Intake.IntakeSpeed.slowIn);
-      intake.setRollerMotor(Intake.IntakeSpeed.rollerIn);
+      intake.setIntakeMotors(SmartDashboard.getNumber("Slow Intake", 0));
     });
     // outtaking
     new JoystickButton(leftJoy, 6).whenPressed(() -> {
-      intake.setIntakeMotors(Intake.IntakeSpeed.normalOut);
-      intake.setRollerMotor(Intake.IntakeSpeed.rollerOut);
+      intake.setIntakeMotors(SmartDashboard.getNumber("Normal Outake", 0));
     });
     // slow outtaking / stacking
     new JoystickButton(leftJoy, 7).whenPressed(() -> {
-      intake.setIntakeMotors(Intake.IntakeSpeed.slowIn);
-      intake.setRollerMotor(Intake.IntakeSpeed.rollerOut);
+      intake.setIntakeMotors(SmartDashboard.getNumber("Slow Outake", 0));
     });
     // stop
     new JoystickButton(leftJoy, 8).whenPressed(() -> {
-      intake.setIntakeMotors(Intake.IntakeSpeed.stop);
-      intake.setRollerMotor(Intake.IntakeSpeed.stop);
+      intake.setIntakeMotors(0);
     });
     // switch drive modes
     new JoystickButton(rightJoy, 6).whenPressed(() -> {
-      if (driveTrain.mode == DriveMode.TANK) {
-        driveTrain.mode = DriveMode.ARCADE;
+      if (driveTrain.mode == 0) {
+        driveTrain.mode = 1;
       } else {
-        driveTrain.mode = DriveMode.TANK;
+        driveTrain.mode = 0;
       }
     });
   }

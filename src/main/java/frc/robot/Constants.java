@@ -11,6 +11,7 @@ package frc.robot;
  *
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
+ * 
  */
 public final class Constants {
     public static final int leftDriveMotorPort = 0;
@@ -23,6 +24,5 @@ public final class Constants {
     public static final int leftJoystickPort = 0;
     public static final int rightJoystickPort = 1;
 
-    public static double driveWheelCircumference = 0.331; // meters
-    public static double greenWheelCircumference = .4776;
+    public static double wheelCircumference = 0.1; // meters
 }

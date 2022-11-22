@@ -9,7 +9,6 @@ import com.revrobotics.RelativeEncoder;
 
 import org.carlmontrobotics.lib199.MotorControllerFactory;
 import org.carlmontrobotics.lib199.MotorErrors.TemperatureLimit;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;

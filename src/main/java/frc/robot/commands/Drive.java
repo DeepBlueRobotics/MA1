@@ -25,7 +25,7 @@ public class Drive extends CommandBase {
 
   @Override
   public void execute() {
-    if (train.mode == DriveTrain.DriveMode.TANK) {
+    if (train.mode == 0) {
       train.tankDrive(-leftJoy.getY(), -rightJoy.getY());
     } else {
       train.arcadeDrive(-leftJoy.getY(), rightJoy.getX());
