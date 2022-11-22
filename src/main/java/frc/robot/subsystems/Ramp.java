@@ -10,6 +10,7 @@ import com.revrobotics.RelativeEncoder;
 import org.carlmontrobotics.lib199.MotorControllerFactory;
 import org.carlmontrobotics.lib199.MotorErrors.TemperatureLimit;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -28,19 +29,17 @@ public class Ramp extends SubsystemBase {
 
   public Ramp() {
     motorEncoder.setPosition(0.0);
+
+    SmartDashboard.putNumber("Ramp Speed", RAMP_SPEED);
   }
 
-  public void moveRamp(float speed) {
+  public void moveRamp(double speed) {
     motor.set(speed);
   }
 
-  public void clampedMoveRamp(float speed) {
+  public void clampedMoveRamp(double speed) {
     motor.set(speed);
     moving = true;
-  }
-
-  public void stopRamp() {
-    motor.set(0.0);
   }
 
   @Override

@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 
 import org.carlmontrobotics.lib199.MotorControllerFactory;
 import org.carlmontrobotics.lib199.MotorErrors.TemperatureLimit;
@@ -16,12 +17,22 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
   public static final double NORMAL_INTAKE_SPEED = 0.8;
   public static final double SLOW_INTAKE_SPEED = 0.05;
+  public static double SUCKY_VELOCITY_THRESHHOLD = 0.2;
 
   private final CANSparkMax motorL = MotorControllerFactory.createSparkMax(Constants.leftIntakeMotorPort, TemperatureLimit.NEO);
   private final CANSparkMax motorR = MotorControllerFactory.createSparkMax(Constants.rightIntakeMotorPort, TemperatureLimit.NEO);
 
+  private final RelativeEncoder encoderL = motorL.getEncoder();
+
   public Intake() {
     motorR.setInverted(true);
+
+    SmartDashboard.putNumber("Normal Intake", NORMAL_INTAKE_SPEED);
+    SmartDashboard.putNumber("Slow Intake", SLOW_INTAKE_SPEED);
+    SmartDashboard.putNumber("Normal Outake", -NORMAL_INTAKE_SPEED);
+    SmartDashboard.putNumber("Slow Outake", -SLOW_INTAKE_SPEED);
+
+    SmartDashboard.putNumber("Sucky Velocity Threshhold", SUCKY_VELOCITY_THRESHHOLD);
   }
 
   public void setIntakeMotors(double speed) {
@@ -31,9 +42,10 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Normal Intake", NORMAL_INTAKE_SPEED);
-    SmartDashboard.putNumber("Slow Intake", SLOW_INTAKE_SPEED);
-    SmartDashboard.putNumber("Normal Outake", -NORMAL_INTAKE_SPEED);
-    SmartDashboard.putNumber("Slow Outake", -SLOW_INTAKE_SPEED);
+    SUCKY_VELOCITY_THRESHHOLD = SmartDashboard.getNumber("Sucky Velocity Threshhold", 0);
+  }
+
+  public RelativeEncoder getEncoder() {
+    return encoderL;
   }
 }

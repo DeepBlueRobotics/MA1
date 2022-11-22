@@ -12,8 +12,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.Drive;
+import frc.robot.commands.IntakePlant;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Ramp;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -27,6 +29,7 @@ public class RobotContainer {
 
   private final DriveTrain driveTrain = new DriveTrain();
   private final Intake intake = new Intake();
+  private final Ramp ramp = new Ramp();
 
   public RobotContainer() {
     configureButtonBindings();
@@ -41,32 +44,44 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //TODO: find button for Ramp up/down
-    //
-    //
-    //
-    // normal intaking
+    // normal intaking (set on press)
     new JoystickButton(leftJoy, 4).whenPressed(() -> {
       intake.setIntakeMotors(SmartDashboard.getNumber("Normal Intake", 0));
     });
-    // slow intaking
-    new JoystickButton(leftJoy, 5).whenPressed(() -> {
-      intake.setIntakeMotors(SmartDashboard.getNumber("Slow Intake", 0));
-    });
-    // outtaking
+    // outtaking (when you release it goes back to intaking)
     new JoystickButton(leftJoy, 6).whenPressed(() -> {
       intake.setIntakeMotors(SmartDashboard.getNumber("Normal Outake", 0));
+    }).whenReleased(() -> {
+      intake.setIntakeMotors(SmartDashboard.getNumber("Normal Intake", 0));
     });
-    // slow outtaking / stacking
+    // slow outtaking (when you release it stops motors)
     new JoystickButton(leftJoy, 7).whenPressed(() -> {
       intake.setIntakeMotors(SmartDashboard.getNumber("Slow Outake", 0));
+    }).whenReleased(() -> {
+      intake.setIntakeMotors(0);
+    });
+    // intake plant
+    new JoystickButton(leftJoy, 5).whenPressed(() -> {
+      new IntakePlant(intake, SmartDashboard.getNumber("Slow Intake", 0));
+    });
+    // ramp in
+    new JoystickButton(leftJoy, 8).whenPressed(() -> {
+      ramp.moveRamp(SmartDashboard.getNumber("Ramp Speed", 0));
+    }).whenReleased(() -> {
+      ramp.moveRamp(0);
+    });
+    // ramp out
+    new JoystickButton(leftJoy, 9).whenPressed(() -> {
+      ramp.moveRamp(-SmartDashboard.getNumber("Ramp Speed", 0));
+    }).whenReleased(() -> {
+      ramp.moveRamp(0);
     });
     // stop
-    new JoystickButton(leftJoy, 8).whenPressed(() -> {
+    new JoystickButton(leftJoy, 10).whenPressed(() -> {
       intake.setIntakeMotors(0);
     });
     // switch drive modes
-    new JoystickButton(rightJoy, 6).whenPressed(() -> {
+    new JoystickButton(rightJoy, 3).whenPressed(() -> {
       if (driveTrain.mode == 0) {
         driveTrain.mode = 1;
       } else {
