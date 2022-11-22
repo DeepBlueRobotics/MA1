@@ -68,7 +68,7 @@ public class Intake extends SubsystemBase {
       rollerOut(0.0375*Constants.greenWheelCircumference),
       stop(0.0);
 
-      
+
 
       public final double value;
 
