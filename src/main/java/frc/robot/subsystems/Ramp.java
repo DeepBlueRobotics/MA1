@@ -15,13 +15,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Ramp extends SubsystemBase {
-  public static final double raisedRampEncoderPos = .25+.1;//default lowered is -.1 rotations
-  public static final double loweredRampEncoderPos = 0;
-  public static final double stoppingBounds = raisedRampEncoderPos/2 - .02;
-  //^ stop this distance away from the borders of rampEncoders
+  public static final double raisedRampEncoderPos = .25;
+  public static final double loweredRampEncoderPos = -.1;//default lowered is -.1
+  public static final double stoppingBounds = (raisedRampEncoderPos-loweredRampEncoderPos)/2 - .02;
+  //stop this distance away from the borders of rampEncoders -----------------------------------^
+  public static int currentRampPos = -1;// -1 down, 1 up
 
 
-  public static final double RAMP_SPEED = 1;
+  public static double STD_RAMP_SPEED = .05;
 
   private final CANSparkMax motor = MotorControllerFactory.createSparkMax(Constants.rampMotorPort, TemperatureLimit.NEO_550);
   private final RelativeEncoder motorEncoder = motor.getEncoder();
@@ -30,23 +31,21 @@ public class Ramp extends SubsystemBase {
   public Ramp() {
     motorEncoder.setPosition(0.0);
 
-    SmartDashboard.putNumber("Ramp Speed", RAMP_SPEED);
+    SmartDashboard.putNumber("Ramp Std Speed", STD_RAMP_SPEED);
   }
 
   public void moveRamp(double speed) {
     motor.set(speed);
   }
 
-  public void clampedMoveRamp(double speed) {
-    motor.set(speed);
-    moving = true;
+  public void stopRamp(){motor.set(0.0);}
+
+  public boolean outOfBounds(){
+    return (Math.abs(motorEncoder.getPosition()-stoppingBounds)>stoppingBounds);
   }
 
   @Override
   public void periodic() {
-    if (moving && (Math.abs(motorEncoder.getPosition()-stoppingBounds)>stoppingBounds)) {//out of bounds!
-      motor.set(0.0);
-      moving = false;
-    }
+    STD_RAMP_SPEED=SmartDashboard.getNumber("Ramp Std Speed", .05);
   }
 }

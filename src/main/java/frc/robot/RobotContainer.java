@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakePlant;
+import frc.robot.commands.ToggleRampPos;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Ramp;
@@ -64,19 +65,13 @@ public class RobotContainer {
     new JoystickButton(leftJoy, 5).whenPressed(() -> {
       new IntakePlant(intake, SmartDashboard.getNumber("Slow Intake", 0));
     });
-    // ramp in
+    // ramp in/out
     new JoystickButton(leftJoy, 8).whenPressed(() -> {
-      ramp.moveRamp(SmartDashboard.getNumber("Ramp Speed", 0));
-    }).whenReleased(() -> {
-      ramp.moveRamp(0);
+      new ToggleRampPos(ramp);
     });
-    // ramp out
-    new JoystickButton(leftJoy, 9).whenPressed(() -> {
-      ramp.moveRamp(-SmartDashboard.getNumber("Ramp Speed", 0));
-    }).whenReleased(() -> {
-      ramp.moveRamp(0);
-    });
-    // stop
+    // stop ramp (if needed)
+    new JoystickButton(leftJoy, 9).whenPressed(ramp::stopRamp);
+    // stop intake
     new JoystickButton(leftJoy, 10).whenPressed(() -> {
       intake.setIntakeMotors(0);
     });
