@@ -37,6 +37,6 @@ public class Drive extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

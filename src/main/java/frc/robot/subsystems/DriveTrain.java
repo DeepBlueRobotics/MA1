@@ -24,9 +24,10 @@ public class DriveTrain extends SubsystemBase {
   private final RelativeEncoder encoderR = motorR.getEncoder();
 
   public int mode = 0; // 0 = tank, 1 = arcade
+  public double speed = 1;
 
   public DriveTrain() {
-    motorR.setInverted(true);
+    motorL.setInverted(true);
 
     encoderL.setPositionConversionFactor(Constants.wheelCircumference);
     encoderR.setPositionConversionFactor(Constants.wheelCircumference);
@@ -37,11 +38,11 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
-    differentialDrive.tankDrive(leftSpeed, rightSpeed);
+    differentialDrive.tankDrive(leftSpeed * speed, rightSpeed * speed);
   }
 
   public void arcadeDrive(double speed, double rotation) {
-    differentialDrive.arcadeDrive(speed, rotation);
+    differentialDrive.arcadeDrive(speed * speed, rotation * speed);
   }
 
   public void resetEncoders() {

@@ -27,6 +27,8 @@ public class RobotContainer {
   private final Joystick leftJoy = new Joystick(Constants.leftJoystickPort);
   private final Joystick rightJoy = new Joystick(Constants.rightJoystickPort);
 
+  private final XboxController controller = new XboxController(Constants.controllerPort);
+
   private final DriveTrain driveTrain = new DriveTrain();
   private final Intake intake = new Intake();
   private final Ramp ramp = new Ramp();
@@ -44,48 +46,66 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // normal intaking (set on press)
-    new JoystickButton(leftJoy, 4).whenPressed(() -> {
+    Constants.Input.setButtons(controller);
+
+    // normal intaking (set on press) RT
+    new JoystickButton(controller, Constants.Input.RT).whenPressed(() -> {
       intake.setIntakeMotors(SmartDashboard.getNumber("Normal Intake", 0));
     });
-    // outtaking (when you release it goes back to intaking)
-    new JoystickButton(leftJoy, 6).whenPressed(() -> {
+    // outtaking (when you release it goes back to intaking) LT
+    new JoystickButton(controller, Constants.Input.LT).whenPressed(() -> {
       intake.setIntakeMotors(SmartDashboard.getNumber("Normal Outake", 0));
     }).whenReleased(() -> {
       intake.setIntakeMotors(SmartDashboard.getNumber("Normal Intake", 0));
     });
-    // slow outtaking (when you release it stops motors)
-    new JoystickButton(leftJoy, 7).whenPressed(() -> {
+    // slow outtaking (when you release it stops motors) A
+    new JoystickButton(controller, Constants.Input.A).whenPressed(() -> {
       intake.setIntakeMotors(SmartDashboard.getNumber("Slow Outake", 0));
     }).whenReleased(() -> {
       intake.setIntakeMotors(0);
     });
-    // intake plant
-    new JoystickButton(leftJoy, 5).whenPressed(() -> {
+    // intake plant B
+    new JoystickButton(controller, Constants.Input.B).whenPressed(() -> {
       new IntakePlant(intake, SmartDashboard.getNumber("Slow Intake", 0));
     });
-    // ramp in
-    new JoystickButton(leftJoy, 8).whenPressed(() -> {
+    // ramp in Y
+    new JoystickButton(controller, Constants.Input.Y).whenPressed(() -> {
       ramp.moveRamp(SmartDashboard.getNumber("Ramp Speed", 0));
     }).whenReleased(() -> {
       ramp.moveRamp(0);
     });
-    // ramp out
-    new JoystickButton(leftJoy, 9).whenPressed(() -> {
+    // ramp out X
+    new JoystickButton(controller, Constants.Input.X).whenPressed(() -> {
       ramp.moveRamp(-SmartDashboard.getNumber("Ramp Speed", 0));
     }).whenReleased(() -> {
       ramp.moveRamp(0);
     });
-    // stop
-    new JoystickButton(leftJoy, 10).whenPressed(() -> {
+    // stop LB
+    new JoystickButton(controller, Constants.Input.LB).whenPressed(() -> {
       intake.setIntakeMotors(0);
     });
     // switch drive modes
-    new JoystickButton(rightJoy, 3).whenPressed(() -> {
+    new JoystickButton(rightJoy, 12).whenPressed(() -> {
       if (driveTrain.mode == 0) {
         driveTrain.mode = 1;
       } else {
         driveTrain.mode = 0;
+      }
+    });
+    // switch ramp speeds
+    new JoystickButton(rightJoy, 5).whenPressed(() -> {
+      if (ramp.speed == 0.01) {
+        ramp.speed = 0.005;
+      } else {
+        ramp.speed = 0.01;
+      }
+    });
+    // switch drive speeds
+    new JoystickButton(rightJoy, 6).whenPressed(() -> {
+      if (driveTrain.speed == 1) {
+        driveTrain.speed = 0.2;
+      } else {
+        driveTrain.speed = 1;
       }
     });
   }

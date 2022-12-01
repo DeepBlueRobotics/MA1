@@ -21,7 +21,7 @@ public class Ramp extends SubsystemBase {
   //^ stop this distance away from the borders of rampEncoders
 
 
-  public static final double RAMP_SPEED = 1;
+  public double speed = 1;
 
   private final CANSparkMax motor = MotorControllerFactory.createSparkMax(Constants.rampMotorPort, TemperatureLimit.NEO_550);
   private final RelativeEncoder motorEncoder = motor.getEncoder();
@@ -30,7 +30,7 @@ public class Ramp extends SubsystemBase {
   public Ramp() {
     motorEncoder.setPosition(0.0);
 
-    SmartDashboard.putNumber("Ramp Speed", RAMP_SPEED);
+    SmartDashboard.putNumber("Ramp Speed", speed);
   }
 
   public void moveRamp(double speed) {
