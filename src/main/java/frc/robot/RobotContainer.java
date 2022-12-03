@@ -13,9 +13,12 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakePlant;
+import frc.robot.commands.ToggleRampPos;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Ramp;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -68,11 +71,9 @@ public class RobotContainer {
     new JoystickButton(controller, Constants.Input.B).whenPressed(() -> {
       new IntakePlant(intake, SmartDashboard.getNumber("Slow Intake", 0));
     });
-    // TODO: ramp toggle
+    // ramp toggle    
     new JoystickButton(controller, Constants.Input.Y).whenPressed(() -> {
-      ramp.moveRamp(SmartDashboard.getNumber("Ramp Speed", 0));
-    }).whenReleased(() -> {
-      ramp.moveRamp(0);
+      new ParallelRaceGroup(new ToggleRampPos(ramp), new WaitCommand(6));
     });
     // stop LB
     new JoystickButton(controller, Constants.Input.LB).whenPressed(() -> {
@@ -87,14 +88,7 @@ public class RobotContainer {
         driveTrain.mode = 0;
       }
     });
-    // switch ramp speeds
-    new JoystickButton(rightJoy, 5).whenPressed(() -> {
-      if (ramp.speed == 0.01) {
-        ramp.speed = 0.005;
-      } else {
-        ramp.speed = 0.01;
-      }
-    });
+
     // switch drive speeds
     new JoystickButton(rightJoy, 6).whenPressed(() -> {
       if (driveTrain.speedMult != 0.2) {
