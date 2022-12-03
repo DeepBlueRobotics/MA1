@@ -10,7 +10,9 @@ import com.revrobotics.RelativeEncoder;
 import org.carlmontrobotics.lib199.MotorControllerFactory;
 import org.carlmontrobotics.lib199.MotorErrors.TemperatureLimit;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -19,18 +21,29 @@ public class DriveTrain extends SubsystemBase {
   private final CANSparkMax motorR = MotorControllerFactory.createSparkMax(Constants.rightDriveMotorPort, TemperatureLimit.NEO);
 
   private final DifferentialDrive differentialDrive = new DifferentialDrive(motorL, motorR);
+
+  public static final double DEFAULT_LIMIT = 0.75;
  
+  public final SlewRateLimiter limiterL = new SlewRateLimiter(DEFAULT_LIMIT);
+  public final SlewRateLimiter limiterR = new SlewRateLimiter(DEFAULT_LIMIT);
+
   private final RelativeEncoder encoderL = motorL.getEncoder();
   private final RelativeEncoder encoderR = motorR.getEncoder();
 
   public int mode = 0; // 0 = tank, 1 = arcade
-  public double speed = 1;
+  public double speedMult = 0.6;
 
   public DriveTrain() {
     motorL.setInverted(true);
 
     encoderL.setPositionConversionFactor(Constants.wheelCircumference);
     encoderR.setPositionConversionFactor(Constants.wheelCircumference);
+  
+    SmartDashboard.putNumber("Limiter Speed", DEFAULT_LIMIT);
+  }
+
+  public void updateLimiter() {
+    //limiter.reset(SmartDashboard.getNumber("Limiter Speed", DEFAULT_LIMIT));
   }
 
   public double getDistance() {
@@ -38,11 +51,15 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
-    differentialDrive.tankDrive(leftSpeed * speed, rightSpeed * speed);
+    updateLimiter();
+    SmartDashboard.putNumber("left tankdrive speed", leftSpeed * this.speedMult);
+    SmartDashboard.putNumber("right tankdrive speed", rightSpeed * this.speedMult);
+    differentialDrive.tankDrive(limiterL.calculate(leftSpeed * this.speedMult), limiterR.calculate(rightSpeed * this.speedMult));
   }
 
   public void arcadeDrive(double speed, double rotation) {
-    differentialDrive.arcadeDrive(speed * speed, rotation * speed);
+    updateLimiter();
+    differentialDrive.arcadeDrive(limiterL.calculate(speed * this.speedMult), rotation * this.speedMult);
   }
 
   public void resetEncoders() {

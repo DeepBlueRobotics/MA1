@@ -68,15 +68,9 @@ public class RobotContainer {
     new JoystickButton(controller, Constants.Input.B).whenPressed(() -> {
       new IntakePlant(intake, SmartDashboard.getNumber("Slow Intake", 0));
     });
-    // ramp in Y
+    // TODO: ramp toggle
     new JoystickButton(controller, Constants.Input.Y).whenPressed(() -> {
       ramp.moveRamp(SmartDashboard.getNumber("Ramp Speed", 0));
-    }).whenReleased(() -> {
-      ramp.moveRamp(0);
-    });
-    // ramp out X
-    new JoystickButton(controller, Constants.Input.X).whenPressed(() -> {
-      ramp.moveRamp(-SmartDashboard.getNumber("Ramp Speed", 0));
     }).whenReleased(() -> {
       ramp.moveRamp(0);
     });
@@ -87,6 +81,7 @@ public class RobotContainer {
     // switch drive modes
     new JoystickButton(rightJoy, 12).whenPressed(() -> {
       if (driveTrain.mode == 0) {
+        driveTrain.limiterL.reset(DriveTrain.DEFAULT_LIMIT);
         driveTrain.mode = 1;
       } else {
         driveTrain.mode = 0;
@@ -102,10 +97,10 @@ public class RobotContainer {
     });
     // switch drive speeds
     new JoystickButton(rightJoy, 6).whenPressed(() -> {
-      if (driveTrain.speed == 1) {
-        driveTrain.speed = 0.2;
+      if (driveTrain.speedMult != 0.2) {
+        driveTrain.speedMult = 0.2;
       } else {
-        driveTrain.speed = 1;
+        driveTrain.speedMult = 0.6;
       }
     });
   }
